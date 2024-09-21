@@ -54,6 +54,10 @@
         <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
         <input id="subject" name="subject" [(ngModel)]="newRequest.subject" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
       </div>
+    <div class="mb-4">
+        <label for="issued" class="block text-sm font-medium text-gray-700">Issued</label>
+        <input id="issued" name="issued" type="datetime-local" [(ngModel)]="newRequest.issued" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      </div>
       <div class="mb-4">
         <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
         <textarea id="message" name="message" [(ngModel)]="newRequest.description" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" rows="4"></textarea>

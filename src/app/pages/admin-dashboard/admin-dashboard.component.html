@@ -52,6 +52,7 @@
                 <h3 class="text-lg font-semibold mb-4">{{ selectedRequest.title }}</h3>
                 <p><strong>Subject:</strong> {{ selectedRequest.subject }}</p>
                 <p><strong>Message:</strong> {{ selectedRequest.description }}</p>
+                <p><strong>Issued:</strong>{{selectedRequest.issued}}</p>
                 <div class="mb-4 flex">
                   <label for="status" class="block text-sm font-medium text-gray-700 mt-1">Status:</label>
                   <select id="status" [(ngModel)]="selectedRequest.status" (change)="updateStatus(selectedRequest)"

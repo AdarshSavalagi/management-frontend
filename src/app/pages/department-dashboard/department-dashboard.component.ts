@@ -52,7 +52,8 @@ export class DepartmentDashboardComponent {
   newRequest:any={
     title:'',
     subject:'',
-    description:''
+    description:'',
+    issued:''
   }
   isModelOpened: boolean=false;
   isLoading:boolean=false;
