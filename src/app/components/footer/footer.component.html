@@ -1,0 +1,27 @@
+<!-- Footer Component -->
+<footer class="bg-gray-800 text-white py-8">
+  <div class="container mx-auto flex flex-col md:flex-row justify-between items-center ">
+    <div class="mb-4 md:mb-0 mx-4">
+      <h2 class="text-xl font-bold">{{ appName }}</h2>
+      <p class="text-gray-400">Simplifying departmental requests and administration.</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div class="flex space-x-6 mx-5">
+      @if (isLoggedIn()){
+      <a href="/" class="text-gray-400 hover:text-white">dashboard</a>
+      <a (click)="logout()" class="text-gray-400 hover:text-white">logout</a>
+      }
+    </div>
+  </div>
+
+  <!-- Bottom Section with Social Media Links -->
+  <div class="border-t border-gray-700 mx-4 mt-4 pt-4">
+    <div class="container mx-auto flex flex-col md:flex-row justify-between items-center">
+      <!-- Copyright -->
+      <p class="text-gray-400 mb-4 md:mb-0">© 2024 College Management App. All rights reserved.</p>
+
+
+    </div>
+  </div>
+</footer>

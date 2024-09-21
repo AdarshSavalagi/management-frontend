@@ -1,0 +1,113 @@
+<!-- admin-dashboard.component.html -->
+<div class="flex flex-col md:flex-row h-screen">
+  <!-- Left Sidebar (Departments List) -->
+  <div class="w-full md:w-1/5 bg-gray-200 p-4 border-r border-gray-300">
+    <h2 class="text-lg font-semibold mb-4">Departments</h2>
+    <button (click)="openModel()" class="mb-4 py-2 px-4 bg-green-600 text-white rounded hover:bg-green-700">
+      Add Department
+    </button>
+    <div class="flex flex-col h-[80vh] overflow-auto">
+      <!-- Department List -->
+      <ul>
+        @for (department of departments; track department.id) {
+          <li (click)="selectDepartment(department)"
+              [class.bg-blue-100]="selectedDepartment === department"
+              class="p-2 cursor-pointer hover:bg-gray-300 rounded">
+            {{ department.name }}
+            @if (department.requests.length > 0) {
+              <span class="ml-2 text-red-500 font-bold">
+                {{ department.unRead}}
+              </span>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <!-- Main Content Area (Requests List and Details) -->
+  <div class="flex-1 bg-white p-6">
+    @if (selectedDepartment) {
+      <div>
+        <h2 class="text-xl font-semibold mb-4">{{ selectedDepartment.name }} Requests</h2>
+        <div class="flex">
+          <!-- Requests List -->
+          <div class="w-1/3 border-r border-gray-300 pr-4">
+            <h3 class="text-lg font-semibold mb-2">Requests</h3>
+            <ul>
+              @for (request of selectedDepartment.requests; track request.title) {
+                <li (click)="selectRequest(request)"
+                    [class.bg-blue-100]="selectedRequest === request"
+                    class="p-2 cursor-pointer hover:bg-gray-300 rounded">
+                  {{ request.title }}
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Request Details -->
+          <div class="flex-1 pl-4">
+            @if (selectedRequest) {
+              <div>
+                <h3 class="text-lg font-semibold mb-4">{{ selectedRequest.title }}</h3>
+                <p><strong>Subject:</strong> {{ selectedRequest.subject }}</p>
+                <p><strong>Message:</strong> {{ selectedRequest.description }}</p>
+                <div class="mb-4 flex">
+                  <label for="status" class="block text-sm font-medium text-gray-700 mt-1">Status:</label>
+                  <select id="status" [(ngModel)]="selectedRequest.status" (change)="updateStatus(selectedRequest)"
+                          class="mt-1 block w-full ring-1 mx-5 border-gray-600 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    <option value="1">Sent</option>
+                    <option value="2">Seen</option>
+                    <option value="3">Processing</option>
+                    <option value="4">Closed</option>
+                  </select>
+                </div>
+              </div>
+            } @else {
+            <div class="text-gray-500 text-center">
+              Select a request to view details
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
+    <div class="text-gray-500 text-center">
+      Select a department to view requests
+    </div>
+    }
+  </div>
+</div>
+
+
+
+@if(isOpened){
+  <div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50"  >
+    <div class="bg-white p-6 rounded shadow-lg w-full md:w-1/3">
+      <h2 class="text-lg font-semibold mb-4">New Department</h2>
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+        <input id="name" name="name" [(ngModel)]="newDepartment.name" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      </div>
+      <div class="mb-4">
+        <label for="subject" class="block text-sm font-medium text-gray-700">Username</label>
+        <input id="subject" name="username" [(ngModel)]="newDepartment.username" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <input id="password" name="password" [(ngModel)]="newDepartment.password" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+      </div>
+
+      <div class="flex justify-end space-x-2">
+        <button type="button" (click)="closeModal()" class="py-2 px-4 bg-gray-500 text-white rounded hover:bg-gray-600">Cancel</button>
+        <button type="submit" [disabled]="isLoading"  (click)="addDepartment()" class="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700">
+          @if(isLoading){
+            submitting....
+          }@else{
+            submit
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}
