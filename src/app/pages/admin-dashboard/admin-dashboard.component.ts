@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import axios from "axios";
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -69,6 +70,7 @@ export class AdminDashboardComponent {
           unRead: requests.filter((req: any) => req.departmentId === ele.id && req.status==1).length,
         });
       });
+      console.log(this.departments);
     } catch (error: any) {
       this.toastr.error(error?.message ?? "An error occurred while fetching data.");
     }
@@ -138,7 +140,39 @@ export class AdminDashboardComponent {
   }
 
 
-  getCsv(){
-    alert("please wait this option will be enabled soon!!")
+  getCsv() {
+    if (this.departments.length === 0) {
+      alert("No data available to download!");
+      return;
+    }
+
+    const flatData = this.departments.flatMap((department: { requests: any[]; name: any; unRead: any; }) => {
+      return department.requests.map((request: any) => ({
+        departmentName: department.name,
+        requestId: request.id,
+        departmentId: request.departmentId,
+        title: request.title,
+        subject: request.subject,
+        description: request.description,
+        status: request.status,
+        issued: request.issued,
+        unRead: department.unRead
+      }));
+    });
+
+    // Create CSV manually
+    const headers = ['departmentName', 'requestId', 'departmentId', 'title', 'subject', 'description', 'status', 'issued', 'unRead'];
+    const csvRows = flatData.map((row: any) =>
+      headers.map(header => JSON.stringify(row[header], null, 2)).join(',')
+    );
+
+    // Add headers row at the top
+    const csvData = [headers.join(','), ...csvRows].join('\r\n');
+
+    // Create a Blob and download the file
+    const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, 'departments_requests.csv');
   }
+
 }
+
