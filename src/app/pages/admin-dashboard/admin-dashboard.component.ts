@@ -136,4 +136,9 @@ export class AdminDashboardComponent {
   openModel() {
     this.isOpened=true;
   }
+
+
+  getCsv(){
+    alert("please wait this option will be enabled soon!!")
+  }
 }
