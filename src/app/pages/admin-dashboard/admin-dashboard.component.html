@@ -15,30 +15,52 @@
         @for (department of departments; track department.id) {
           <li (click)="selectDepartment(department)"
               [class.bg-blue-100]="selectedDepartment === department"
-              class="p-2 cursor-pointer hover:bg-gray-300 rounded">
-            {{ department.name }}
-            @if (department.requests.length > 0) {
-              <span class="ml-2 text-red-500 font-bold">
-                {{ department.unRead}}
-              </span>
-            }
+              class="p-2 cursor-pointer hover:bg-gray-300 rounded flex justify-between items-center">
+            
+            <!-- Department Name and Unread Requests -->
+            <div class="flex items-center">
+              <span class="font-medium">{{ department.name }}</span>
+              @if (department.requests.length > 0) {
+                <span class="ml-2 text-red-500 font-bold">
+                  {{ department.unRead }}
+                </span>
+              }
+            </div>
+            
+            <!-- Delete Button (Moved to the right) -->
+            <div>
+         
+      
+                
+                <button (click)="deleteDepartment(department.id, $event)" class="ml-2 text-red-500 hover:text-red-700">
+                  <i class="fa fa-trash"></i>
+                </button>
+                
+                
+              
+             
+              
+            </div>
+            
           </li>
         }
       </ul>
+      
+      
     </div>
   </div>
 
   <!-- Main Content Area (Requests List and Details) -->
-  <div class="flex-1 bg-white p-6 h-screen overflow-y-auto">
+  <div class="flex-1 bg-white p-6 h-screen ">
     @if (selectedDepartment) {
       <div>
         <h2 class="text-xl font-semibold mb-4">{{ selectedDepartment.name }} Requests</h2>
         <div class="flex">
           <!-- Requests List -->
-          <div class="w-1/3 border-r border-gray-300 pr-4">
+          <div class="w-1/3 border-r border-gray-300 pr-4 h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-semibold mb-2">Requests</h3>
             <ul>
-              @for (request of selectedDepartment.requests; track request.title) {
+              @for (request of selectedDepartment.requests; track request.id) {
                 <li (click)="selectRequest(request)"
                     [class.bg-blue-100]="selectedRequest === request"
                     class="p-2 cursor-pointer hover:bg-gray-300 rounded">

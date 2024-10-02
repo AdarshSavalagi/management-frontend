@@ -66,6 +66,7 @@ export class AdminDashboardComponent {
       departments.forEach((ele: any) => {
         this.departments.push({
           name: ele.name,
+          id:ele.id,
           requests: requests.filter((req: any) => req.departmentId === ele.id),
           unRead: requests.filter((req: any) => req.departmentId === ele.id && req.status==1).length,
         });
@@ -116,6 +117,39 @@ export class AdminDashboardComponent {
         this.isLoading=false;
       }
   }
+
+
+
+  async deleteDepartment(departmentId: string, event: Event) {
+    // Prevent the click event from selecting the department
+    event.stopPropagation();
+  
+    console.log(departmentId); // Log the department ID for debugging
+  
+    if (confirm(`Are you sure you want to delete the department with ID: ${departmentId}?`)) {
+      try {
+        // Make the DELETE request to the backend API
+        const response = await axios.delete(`${apiEndPoint}/department/${departmentId}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(tokenName)}` // Include the token in the header
+          }
+        });
+  
+        if (response.status === 200) {
+          this.toastr.success('Department deleted successfully.');
+          await this.getData(); // Refresh the data to reflect changes
+        } else {
+          this.toastr.error('Failed to delete the department.');
+        }
+      } catch (error: any) {
+        this.toastr.error(error.message ?? 'An error occurred during deletion.');
+      }
+    }
+}
+
+  
+  
+  
 
  async updateStatus(selectedRequest: any) {
     try {
